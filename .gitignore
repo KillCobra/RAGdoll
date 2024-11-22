@@ -1,0 +1,9 @@
+*.pyc
+.DS_Store
+backup
+chroma
+venv/
+.env
+__pycache__/
+*.py[cod]
+*$py.class
