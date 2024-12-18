@@ -36,7 +36,8 @@ def main():
     args = parser.parse_args()
     query_text = args.query_text
     response = query_rag(query_text)
-    print(response)
+    print("\nResponse:", response["text"])
+    print("\nSources:", response["sources"])
 
 def query_rag(query_text: str):
     """
