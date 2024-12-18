@@ -7,3 +7,5 @@ venv/
 __pycache__/
 *.py[cod]
 *$py.class
+scholar_scraper.py
+test_scraper.py

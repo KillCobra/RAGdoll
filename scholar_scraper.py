@@ -31,6 +31,9 @@ class ScholarScraper:
                     # Find PDF links from the paper's page
                     pdf_links.extend(self.find_pdf_links(paper_url))
                     
+                    # Also check for direct PDF links in the main article page
+                    pdf_links.extend(self.find_direct_pdf_links(paper_url))
+                    
             # Add random delay between requests
             time.sleep(random.uniform(1, 3))
                     
@@ -57,7 +60,11 @@ class ScholarScraper:
             # Find all links on the page
             for link in soup.find_all('a'):
                 href = link.get('href', '')
+                # Check for PDF links
                 if href.lower().endswith('.pdf'):
+                    pdf_links.append(href)
+                # Check for links that may lead to PDFs
+                elif 'pdf' in href.lower():
                     pdf_links.append(href)
                     
             # Add random delay between requests
@@ -68,12 +75,35 @@ class ScholarScraper:
             
         return pdf_links
 
+    def find_direct_pdf_links(self, url):
+        """
+        Check for direct PDF links in the main article page
+        """
+        direct_pdf_links = []
+        
+        try:
+            response = requests.get(url, headers=self.headers, timeout=10)
+            soup = BeautifulSoup(response.text, 'html.parser')
+            
+            # Look for direct PDF links in the page
+            for link in soup.find_all('a'):
+                href = link.get('href', '')
+                # Check for links that may lead to PDFs
+                if 'pdf' in href.lower():
+                    direct_pdf_links.append(href)
+                    
+        except Exception as e:
+            print(f"Error finding direct PDF links in {url}: {str(e)}")
+        
+        return direct_pdf_links
+
 def main():
     scraper = ScholarScraper()
     
-    # Get search URL from user
-    search_query = input("Enter your search query (e.g., 'firetruck' or 'air'): ")
-    search_url = f"https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q={urllib.parse.quote(search_query)}&btnG="
+    # Get search query from user
+    search_query = input("Enter your search query (e.g., 'firetruck hello'): ")
+    search_query = search_query.replace(" ", "+")  # Convert spaces to +
+    search_url = f"https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q={search_query}&btnG="
     
     # Scrape PDF links from the search results
     print("\nScraping PDF links...")
