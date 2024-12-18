@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from langchain_community.vectorstores import Chroma
 from langchain.prompts import ChatPromptTemplate
-from langchain_community.llms import HuggingFaceHub
+import requests
 
 from get_embedding_function import get_embedding_function
 
@@ -22,12 +22,11 @@ Answer the question based only on the following context:
 Answer the question based on the above context: {question}
 """
 
-
 def main():
-    # Verify HuggingFace API token is set
-    if not os.getenv("HUGGINGFACEHUB_API_TOKEN"):
+    # Verify Gemini API key is set
+    if not os.getenv("GEMINI_API_KEY"):
         raise ValueError(
-            "HUGGINGFACEHUB_API_TOKEN not found in environment variables. "
+            "GEMINI_API_KEY not found in environment variables. "
             "Please add it to your .env file."
         )
     
@@ -36,35 +35,67 @@ def main():
     parser.add_argument("query_text", type=str, help="The query text.")
     args = parser.parse_args()
     query_text = args.query_text
-    query_rag(query_text)
-
+    response = query_rag(query_text)
+    print(response)
 
 def query_rag(query_text: str):
-    # Prepare the DB.
+    """
+    Query the RAG system and return the response
+    """
+    # Prepare the DB
     embedding_function = get_embedding_function()
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
 
-    # Search the DB.
+    # Search the DB
     results = db.similarity_search_with_score(query_text, k=5)
-
     context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
+    
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
     prompt = prompt_template.format(context=context_text, question=query_text)
 
-    # Initialize HuggingFaceHub LLM
-    model = HuggingFaceHub(
-        repo_id="google/flan-t5-base",
-        model_kwargs={"temperature": 0.5, "max_length": 512},
-        huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_API_TOKEN")
-    )
+    # Initialize Gemini API call
+    api_key = os.getenv("GEMINI_API_KEY")
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={api_key}"
     
-    response_text = model.invoke(prompt)
+    # Updated data structure to match Gemini API requirements
+    data = {
+        "contents": [
+            {
+                "parts": [
+                    {
+                        "text": prompt
+                    }
+                ]
+            }
+        ]
+    }
+    
+    # Updated headers (removed Bearer token)
+    headers = {
+        "Content-Type": "application/json"
+    }
+    
+    response = requests.post(url, headers=headers, json=data)
+    
+    if response.status_code != 200:
+        raise Exception(f"Error from Gemini API: {response.text}")
+
+    # Extract the response from the Gemini API response structure
+    try:
+        response_data = response.json()
+        if 'candidates' in response_data:
+            response_text = response_data['candidates'][0]['content']['parts'][0]['text']
+        else:
+            response_text = "No response generated"
+    except Exception as e:
+        raise Exception(f"Error parsing Gemini API response: {str(e)}")
 
     sources = [doc.metadata.get("id", None) for doc, _score in results]
-    formatted_response = f"Response: {response_text}\nSources: {sources}"
-    print(formatted_response)
-    return response_text
-
+    
+    return {
+        "text": response_text,
+        "sources": sources
+    }
 
 if __name__ == "__main__":
     main()
