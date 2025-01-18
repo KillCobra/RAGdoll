@@ -208,7 +208,6 @@ def main():
     )
 
     response = run_query_with_description(args.description, args.market_or_sector, query_text=None)
-    print("finished before")
     if response:
         print("\nResponse:", response["text"])
         pdf_path = os.path.join("data", "response.pdf")

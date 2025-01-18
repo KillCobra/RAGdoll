@@ -56,6 +56,7 @@ def main(company_description, query_text):
     if response:
         print("\nResponse:", response["text"])
         print("\nSources:", response["sources"])
+        return response
     else:
         print("No response generated.")
 
@@ -127,7 +128,7 @@ def query_rag(company_description: str, query_text: str):
     sources = [doc.metadata.get("id", None) for doc, _score in results]
     
     # Add the query_text as a used keyword to Chroma DB
-    add_keyword(db, query_text)
+    # add_keyword(db, query_text)
 
     return {
         "text": response_text,
@@ -138,10 +139,10 @@ def is_keyword_used(db, keyword, threshold=0.8):
     """
     Check if the keyword has already been used by searching in Chroma DB.
     """
-    results = db.similarity_search_with_score(keyword, k=1)  # We check for the most similar document
+    results = db.similarity_search_with_relevance_scores(keyword, k=1)
     if results:
         top_doc, score = results[0]
-        if score > threshold:  # If the match is good enough (score threshold can be adjusted)
+        if score > threshold:
             print(f"Keyword '{keyword}' found in Chroma DB with a score of {score}. Skipping search.")
             return True
     return False

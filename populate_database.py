@@ -20,15 +20,22 @@ def main():
     # Check if the database should be cleared (using the --clear flag).
     parser = argparse.ArgumentParser()
     parser.add_argument("--reset", action="store_true", help="Reset the database.")
+    parser.add_argument("--view", action="store_true", help="View contents of the database.")
     args = parser.parse_args()
+
     if args.reset:
         print("✨ Clearing Database")
         clear_database()
 
-    # Create (or update) the data store.
-    documents = load_documents()
-    chunks = split_documents(documents)
-    add_to_chroma(chunks)
+    if args.view:
+        print("🔍 Viewing Database Contents")
+        view_chroma_db_contents()
+
+    if not args.view:
+        # Create (or update) the data store.
+        documents = load_documents()
+        chunks = split_documents(documents)
+        add_to_chroma(chunks)
 
 
 def load_documents():
@@ -109,6 +116,23 @@ def clear_database():
     if os.path.exists(CHROMA_PATH):
         shutil.rmtree(CHROMA_PATH)
 
+
+def view_chroma_db_contents():
+    """
+    Retrieve and display all documents stored in the Chroma database.
+    """
+    embedding_function = get_embedding_function()
+    db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
+    try:
+        # Retrieve documents using the get method which returns JSON
+        documents = db.get()
+        print("Displaying all documents stored in the Chroma database:")
+        
+        # Iterate through the documents assuming they are in a list under a key, adjust if the structure is different
+        with open('data/documents.txt', 'w', encoding='utf-8') as f:
+            f.write(f"{documents}\n")
+    except Exception as e:
+        print(f"Failed to retrieve documents from Chroma DB: {e}")
 
 if __name__ == "__main__":
     main()
