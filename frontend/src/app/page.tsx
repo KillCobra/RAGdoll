@@ -1,124 +1,59 @@
 import Image from 'next/image'
-// import AnalysisForm from './components/AnalysisForm'
+import AnalysisForm from './components/AnalysisForm'
 
 export default function Home() {
   return (
-    <main className="min-h-screen p-8 bg-black text-white">
+    <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header Section */}
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-4">
-            Web-Enhanced Risk Advisory System
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-extrabold mb-4 text-gray-900">
+            Risk Analysis System
           </h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Leverage AI-powered analysis to identify and assess potential risks for your business expansion
+          </p>
         </div>
 
         {/* Main Content */}
-        <div className="space-y-8">
-          <form className="space-y-6">
-            {/* Scenario Description */}
-            <div>
-              <label className="block mb-2">
-                Scenario Description:
-              </label>
-              <textarea 
-                className="w-full h-24 p-2 bg-black border border-gray-600 text-white"
-                placeholder="Enter your scenario description..."
-                required
-              />
-            </div>
+        <div className="bg-white rounded-xl shadow-2xl p-8 mb-12">
+          {/* Instructions */}
+          <div className="mb-10 border-b pb-8">
+            <h2 className="text-2xl font-semibold mb-6 text-gray-800">How it works</h2>
+            <ol className="list-decimal pl-6 space-y-4 text-gray-600">
+              <li className="pl-2">Enter your company description in detail, including your core business activities, current market position, and goals</li>
+              <li className="pl-2">Specify your target market or sector for expansion</li>
+              <li className="pl-2">Submit your information for comprehensive analysis</li>
+              <li className="pl-2">Receive a detailed risk assessment report with actionable insights</li>
+            </ol>
+          </div>
 
-            {/* Specific Questions */}
-            <div>
-              <label className="block mb-2">
-                Specific Questions:
-              </label>
-              <textarea 
-                className="w-full h-24 p-2 bg-black border border-gray-600 text-white"
-                placeholder="Enter your specific questions..."
-                required
-              />
-            </div>
-
-            {/* Upload Document */}
-            <div>
-              <label className="block mb-2">
-                Upload Document (Optional):
-              </label>
-              <input
-                type="file"
-                className="block w-full text-white"
-              />
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600"
-            >
-              Submit Scenario
-            </button>
-          </form>
-
-          {/* Footer Section */}
-          <div className="mt-8">
-            <p>Powered by RAG Technology</p>
-            <div className="flex gap-2 mt-2">
-              <span>• ChromaDB</span>
-              <span>• LangChain</span>
-              <span>• Gemini API</span>
-            </div>
+          {/* Form Component */}
+          <div className="bg-gray-50 p-6 rounded-lg">
+            <h3 className="text-xl font-medium mb-6 text-gray-800">Enter Your Details</h3>
+            <AnalysisForm />
           </div>
         </div>
+
+        {/* Footer Section */}
+        <footer className="text-center text-gray-600">
+          <p className="text-sm mb-4">Powered by Advanced RAG Technology</p>
+          <div className="flex justify-center gap-6 items-center">
+            <div className="flex items-center space-x-2">
+              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+              <span>ChromaDB</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+              <span>LangChain</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+              <span>Gemini API</span>
+            </div>
+          </div>
+        </footer>
       </div>
     </main>
-  )
-}
-
-function AnalysisForm() {
-  return (
-    <form className="space-y-8">
-      {/* Scenario Description */}
-      <div>
-        <label className="block text-gray-700 font-medium mb-2">
-          Scenario Description:
-        </label>
-        <textarea 
-          className="w-full h-40 p-3 border rounded-lg"
-          placeholder="Enter your scenario description..."
-          required
-        />
-      </div>
-
-      {/* Specific Questions */}
-      <div>
-        <label className="block text-gray-700 font-medium mb-2">
-          Specific Questions:
-        </label>
-        <textarea 
-          className="w-full h-40 p-3 border rounded-lg"
-          placeholder="Enter your specific questions..."
-          required
-        />
-      </div>
-
-      {/* Upload Document */}
-      <div>
-        <label className="block text-gray-700 font-medium mb-2">
-          Upload Document (Optional):
-        </label>
-        <input
-          type="file"
-          className="block w-full text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-gray-100 hover:file:bg-gray-200"
-        />
-      </div>
-
-      {/* Submit Button */}
-      <button
-        type="submit"
-        className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors"
-      >
-        Submit Scenario
-      </button>
-    </form>
   )
 }
