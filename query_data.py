@@ -31,12 +31,31 @@ Based on the company description and the context provided, please answer the que
 """
 
 def run_query_with_description(company_description, market_or_sector, query_text=None):
-    if query_text is None:
-        query_text = (f"Could you provide an analysis of the key risks involved in expanding into {market_or_sector}? "
-                       "Outline the potential risks and their impacts on the business. Also, analyze potential risk "
-                       "mitigation strategies and prioritize them based on effectiveness and feasibility. "
-                       "Please list them in order of importance and provide any recommendations for mitigating the most critical risks.")
-    return main(company_description, query_text)
+    try:
+        if query_text is None:
+            query_text = (f"Could you provide an analysis of the key risks involved in expanding into {market_or_sector}? "
+                         "Outline the potential risks and their impacts on the business. Also, analyze potential risk "
+                         "mitigation strategies and prioritize them based on effectiveness and feasibility. "
+                         "Please list them in order of importance and provide any recommendations for mitigating the most critical risks.")
+
+        response = query_rag(company_description, query_text)
+        if not response:
+            return {
+                "text": "No response generated",
+                "sources": []
+            }
+        
+        return {
+            "text": response.get("text", "No response generated"),
+            "sources": response.get("sources", [])
+        }
+
+    except Exception as e:
+        print(f"Error in run_query_with_description: {str(e)}")
+        return {
+            "text": f"Error occurred: {str(e)}",
+            "sources": []
+        }
 
 def main(company_description, query_text):
     # Verify Gemini API key is set
@@ -52,7 +71,7 @@ def main(company_description, query_text):
     parser.add_argument("market_or_sector", type=str, nargs='?', default="", help="Market or sector for expansion")
     args = parser.parse_args()
 
-    response = query_rag(args.company_description, query_text)
+    response = query_rag(args.company_description, args.query_text)
     if response:
         print("\nResponse:", response["text"])
         print("\nSources:", response["sources"])

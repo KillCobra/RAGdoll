@@ -32,6 +32,7 @@ def main():
         view_chroma_db_contents()
 
     if not args.view:
+        print("Adding Contents to Database")
         # Create (or update) the data store.
         documents = load_documents()
         chunks = split_documents(documents)
