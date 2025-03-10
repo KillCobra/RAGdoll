@@ -1,19 +1,18 @@
-/* CSS Variables - Move to top level */
-.root {
-  --background: #f9fafb;
-  --background-elevated: #ffffff;
-  --foreground: #111827;
-  --foreground-muted: #4b5563;
-  --border: #e5e7eb;
-  --blue: #3b82f6;
-  --green: #10b981;
-  --purple: #8b5cf6;
+/* Theme variables need to be attached to a class */
+.wrapper {
+  --background: #1a1a1a;
+  --background-elevated: #242424;
+  --accent-purple: #c392ec;
+  --accent-teal: #85d5c8;
+  --foreground: #ffffff;
+  --foreground-muted: #a0a0a0;
+  --border: #333333;
 }
 
 /* Main Layout */
 .page {
   min-height: 100vh;
-  background-color: var(--background);
+  background-color: #1a1a1a;
   padding: 3rem 1rem;
 }
 
@@ -31,38 +30,40 @@
 .title {
   font-size: 3.5rem;
   font-weight: 800;
-  color: var(--foreground);
+  color: #ffffff;
   margin-bottom: 1rem;
   line-height: 1.2;
 }
 
 .subtitle {
   font-size: 1.25rem;
-  color: var(--foreground-muted);
+  color: #a0a0a0;
   max-width: 36rem;
   margin: 0 auto;
 }
 
 /* Main Content */
 .mainContent {
-  background: var(--background-elevated);
+  background: #242424;
   border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+  box-shadow: 0 10px 25px -5px rgba(195, 146, 236, 0.1),
+              0 8px 10px -6px rgba(133, 213, 200, 0.1);
+  padding: 2.5rem;
   margin-bottom: 3rem;
   text-align: center;
+  border: 1px solid #333333;
 }
 
 .instructions {
   margin-bottom: 2.5rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid #333333;
   padding-bottom: 2rem;
 }
 
 .sectionTitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--foreground);
+  color: #ffffff;
   margin-bottom: 1.5rem;
 }
 
@@ -70,34 +71,37 @@
   list-style-position: inside;
   list-style-type: decimal;
   text-align: left;
-  color: var(--foreground-muted);
+  color: #a0a0a0;
   font-size: 1rem;
   line-height: 1.6;
 }
 
 .stepsList li {
   margin-bottom: 1rem;
+  padding-left: 1rem;
 }
 
 /* Form Container */
 .formContainer {
-  background: var(--background);
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  background: #1a1a1a;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(195, 146, 236, 0.1),
+              0 2px 4px -1px rgba(133, 213, 200, 0.1);
+  border: 1px solid #c392ec;
 }
 
 .formTitle {
   font-size: 1.25rem;
   font-weight: 500;
-  color: var(--foreground);
+  color: #ffffff;
   margin-bottom: 1.5rem;
 }
 
 /* Footer */
 .footer {
   text-align: center;
-  color: var(--foreground-muted);
+  color: #a0a0a0;
   margin-top: 3rem;
 }
 
@@ -126,28 +130,9 @@
 }
 
 /* Colors */
-.blue { 
-  background-color: var(--blue); 
-}
-
-.green { 
-  background-color: var(--green); 
-}
-
-.purple { 
-  background-color: var(--purple); 
-}
-
-/* Dark Mode */
-@media (prefers-color-scheme: dark) {
-  .root {
-    --background: #111827;
-    --background-elevated: #1f2937;
-    --foreground: #f9fafb;
-    --foreground-muted: #9ca3af;
-    --border: #374151;
-  }
-}
+.blue { background-color: #c392ec; }
+.green { background-color: #85d5c8; }
+.purple { background-color: #c392ec; }
 
 /* Responsive Design */
 @media (max-width: 640px) {
