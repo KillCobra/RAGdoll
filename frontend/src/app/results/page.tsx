@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import styles from './results.module.css';
 
 interface AnalysisResult {
   text: string;
@@ -29,17 +30,84 @@ export default function ResultsPage() {
     }
   }, []);
 
+  const formatContent = (text: string) => {
+    // Split content into lines
+    const lines = text.split('\n');
+    let formattedContent: React.ReactNode[] = [];
+    let currentList: React.ReactNode[] = [];
+    let inList = false;
+
+    lines.forEach((line, index) => {
+      // Handle titles (##)
+      if (line.startsWith('##')) {
+        formattedContent.push(
+          <h1 key={`title-${index}`} className={styles.mainTitle}>
+            {line.replace('##', '').trim()}
+          </h1>
+        );
+        return;
+      }
+
+      // Handle bold text (**text**)
+      const boldPattern = /\*\*(.*?)\*\*/g;
+      const lineWithBold = line.replace(boldPattern, (match, text) => {
+        return `<strong>${text}</strong>`;
+      });
+
+      // Handle bullet points
+      if (line.trim().startsWith('*')) {
+        if (!inList) {
+          inList = true;
+          currentList = [];
+        }
+        currentList.push(
+          <li key={`list-item-${index}`} 
+              className={styles.listItem}
+              dangerouslySetInnerHTML={{ __html: lineWithBold.replace('*', '').trim() }} />
+        );
+      } else {
+        if (inList) {
+          formattedContent.push(
+            <ul key={`list-${index}`} className={styles.list}>
+              {currentList}
+            </ul>
+          );
+          inList = false;
+          currentList = [];
+        }
+        
+        if (line.trim()) {
+          formattedContent.push(
+            <p key={`text-${index}`} 
+               className={styles.paragraph}
+               dangerouslySetInnerHTML={{ __html: lineWithBold }} />
+          );
+        }
+      }
+    });
+
+    // Add any remaining list items
+    if (inList && currentList.length > 0) {
+      formattedContent.push(
+        <ul key="final-list" className={styles.list}>
+          {currentList}
+        </ul>
+      );
+    }
+
+    return formattedContent;
+  };
+
   if (error) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          <p>{error}</p>
-          <button
-            onClick={() => router.push('/')}
-            className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
-          >
-            Try Again
-          </button>
+      <div className={styles.wrapper}>
+        <div className={styles.container}>
+          <div className={styles.error}>
+            <p>{error}</p>
+            <button onClick={() => router.push('/')} className={styles.button}>
+              Try Again
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -47,41 +115,40 @@ export default function ResultsPage() {
 
   if (!results) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+      <div className={styles.wrapper}>
+        <div className={styles.container}>
+          <div className={styles.loading}>
+            <div className="h-4 bg-gray-700 rounded w-3/4 mb-4"></div>
+            <div className="h-4 bg-gray-700 rounded w-1/2"></div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Risk Analysis Results</h1>
-      <div className="bg-white shadow rounded-lg p-6">
-        <div className="prose max-w-none">
-          <h2 className="text-xl font-semibold mb-4">Analysis</h2>
-          <div className="whitespace-pre-wrap">{results.text}</div>
+    <div className={styles.wrapper}>
+      <div className={styles.container}>
+        <div className={styles.mainContent}>
+          <div className={styles.analysisText}>
+            {formatContent(results.text)}
+          </div>
           
           {results.sources && results.sources.length > 0 && (
             <>
-              <h3 className="text-lg font-semibold mt-6 mb-2">Sources</h3>
-              <ul className="list-disc pl-5">
+              <h3 className={styles.sourcesTitle}>Sources</h3>
+              <ul className={styles.sourcesList}>
                 {results.sources.map((source, index) => (
-                  <li key={index} className="text-sm text-gray-600">{source}</li>
+                  <li key={index} className={styles.sourceItem}>{source}</li>
                 ))}
               </ul>
             </>
           )}
+          
+          <button onClick={() => router.push('/')} className={styles.button}>
+            New Analysis
+          </button>
         </div>
-        
-        <button
-          onClick={() => router.push('/')}
-          className="mt-8 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-        >
-          New Analysis
-        </button>
       </div>
     </div>
   );

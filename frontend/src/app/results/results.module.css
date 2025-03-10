@@ -1,0 +1,165 @@
+.wrapper {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  padding: 3rem 1rem;
+}
+
+.container {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.mainContent {
+  background: #242424;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px -5px rgba(195, 146, 236, 0.1),
+              0 8px 10px -6px rgba(133, 213, 200, 0.1);
+  padding: 2.5rem;
+  border: 1px solid #333333;
+}
+
+/* Typography */
+.mainTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.analysisText {
+  color: #a0a0a0;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.paragraph {
+  margin-bottom: 1.25rem;
+}
+
+.paragraph strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* List Styling */
+.list {
+  margin: 0.5rem 0 1.25rem 1.5rem;
+  list-style-type: none;
+}
+
+.list .list {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+.listItem {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #a0a0a0;
+}
+
+.listItem::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #85d5c8;
+}
+
+/* Nested List Items */
+.listItem .listItem {
+  margin-left: 1.5rem;
+}
+
+/* Numbered List Items */
+.listItem[data-number]::before {
+  content: attr(data-number) ".";
+  color: #c392ec;
+  left: -1rem;
+}
+
+/* Sources Section */
+.sourcesTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid #333333;
+}
+
+.sourcesList {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  color: #a0a0a0;
+}
+
+.sourceItem {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Button */
+.button {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  background: linear-gradient(135deg, #c392ec, #85d5c8);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background: linear-gradient(135deg, #b47ee7, #6dcbbe);
+  box-shadow: 0 4px 6px rgba(195, 146, 236, 0.2);
+}
+
+/* Loading and Error States */
+.error {
+  background: #242424;
+  border: 1px solid #c392ec;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  color: #ffffff;
+  text-align: center;
+}
+
+.loading {
+  background: #242424;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .wrapper {
+    padding: 2rem 1rem;
+  }
+
+  .mainContent {
+    padding: 1.5rem;
+  }
+
+  .mainTitle {
+    font-size: 1.75rem;
+  }
+
+  .list {
+    margin-left: 1rem;
+  }
+
+  .listItem {
+    padding-left: 1.25rem;
+  }
+} 
