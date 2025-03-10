@@ -1,6 +1,6 @@
 .wrapper {
   min-height: 100vh;
-  background-color: #1a1a1a;
+  background: linear-gradient(135deg, #000000, #1a1a1a);
   padding: 3rem 1rem;
 }
 

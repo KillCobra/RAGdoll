@@ -17,15 +17,15 @@ body {
 
 /* Theme variables */
 :root {
-  --background: #f9fafb;
-  --foreground: #111827;
+  --background: #000000; /* OLED black */
+  --foreground: #f9fafb; /* Light foreground for contrast */
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: linear-gradient(135deg, #000000, #1a1a1a); /* Gradient from OLED black to dark gray */
 }
 
 a {
@@ -46,7 +46,7 @@ a {
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #111827;
+    --background: #000000; /* OLED black */
     --foreground: #f9fafb;
     --primary: #3b82f6;
     --primary-hover: #2563eb;
