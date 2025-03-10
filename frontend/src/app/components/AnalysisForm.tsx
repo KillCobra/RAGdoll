@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import LoadingSpinner from './LoadingSpinner';
+import styles from './AnalysisForm.module.css';
 
 export default function AnalysisForm() {
   const [formData, setFormData] = useState({
@@ -44,48 +45,59 @@ export default function AnalysisForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          {error}
+    <div className={styles.formWrapper}>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        {error && (
+          <div className={styles.error}>
+            {error}
+          </div>
+        )}
+
+        <div className={styles.formGroup}>
+          <label className={styles.label}>
+            Company Description
+            <span className={styles.required}>(Required)</span>
+          </label>
+          <textarea
+            required
+            className={styles.textarea}
+            rows={6}
+            placeholder="Describe your company's core business, current market position, and goals..."
+            value={formData.description}
+            onChange={(e) => setFormData({...formData, description: e.target.value})}
+          />
         </div>
-      )}
 
-      <div>
-        <label className="block text-sm font-medium mb-2">
-          Company Description
-        </label>
-        <textarea
-          required
-          className="w-full p-2 border rounded"
-          rows={4}
-          value={formData.description}
-          onChange={(e) => setFormData({...formData, description: e.target.value})}
-        />
-      </div>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>
+            Target Market/Sector
+            <span className={styles.required}>(Required)</span>
+          </label>
+          <input
+            type="text"
+            required
+            className={styles.input}
+            placeholder="e.g., Rural Area, Urban Market, Technology Sector..."
+            value={formData.market_or_sector}
+            onChange={(e) => setFormData({...formData, market_or_sector: e.target.value})}
+          />
+        </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-2">
-          Market/Sector
-        </label>
-        <input
-          type="text"
-          required
-          className="w-full p-2 border rounded"
-          value={formData.market_or_sector}
-          onChange={(e) => setFormData({...formData, market_or_sector: e.target.value})}
-        />
-      </div>
-
-      <button
-        type="submit"
-        disabled={isLoading}
-        className={`w-full py-2 px-4 rounded text-white ${
-          isLoading ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'
-        }`}
-      >
-        {isLoading ? <LoadingSpinner /> : 'Submit for Analysis'}
-      </button>
-    </form>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className={styles.button}
+        >
+          {isLoading ? (
+            <div className={styles.loadingWrapper}>
+              <LoadingSpinner size="small" color="white" text="" />
+              <span>Analyzing...</span>
+            </div>
+          ) : (
+            'Generate Risk Analysis'
+          )}
+        </button>
+      </form>
+    </div>
   );
 }
