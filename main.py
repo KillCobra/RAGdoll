@@ -191,7 +191,20 @@ def save_response_to_pdf(response_text, file_path):
     c.save()
     print(f"Response saved to PDF at {file_path}")
 
-def main():
+def run_analysis(description: str, market_or_sector: str, max_keywords: int = 6, max_pdf_links: int = 20):
+    """Run the analysis based on the provided parameters."""
+    prepare_data(description, market_or_sector, max_pdf_links, max_keywords)
+
+    response = run_query_with_description(description, market_or_sector, query_text=None)
+    if response:
+        return response
+        # pdf_path = os.path.join("data", "response.pdf")
+        # os.makedirs("data", exist_ok=True)
+        # save_response_to_pdf(response["text"], pdf_path)
+    else:
+        print("No response generated or an error occurred.")
+
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process company data and generate reports.")
     parser.add_argument("description", type=str, help="Company description")
     parser.add_argument("market_or_sector", type=str, help="Market or sector for expansion")
@@ -199,22 +212,10 @@ def main():
     parser.add_argument("--max_pdf_links", type=int, default=20, help="Maximum number of PDF links to retrieve")
     args = parser.parse_args()
 
-    # Use the arguments in the functions
-    prepare_data(
+    # Call the new run_analysis function with the parsed arguments
+    run_analysis(
         args.description,
         args.market_or_sector,
-        args.max_pdf_links,
-        args.max_keywords
+        args.max_keywords,
+        args.max_pdf_links
     )
-
-    response = run_query_with_description(args.description, args.market_or_sector, query_text=None)
-    if response:
-        print("\nResponse:", response["text"])
-        pdf_path = os.path.join("data", "response.pdf")
-        os.makedirs("data", exist_ok=True)
-        save_response_to_pdf(response["text"], pdf_path)
-    else:
-        print("No response generated or an error occurred.")
-
-if __name__ == "__main__":
-    main()

@@ -138,9 +138,23 @@ export default function ResultsPage() {
             <>
               <h3 className={styles.sourcesTitle}>Sources</h3>
               <ul className={styles.sourcesList}>
-                {results.sources.map((source, index) => (
-                  <li key={index} className={styles.sourceItem}>{source}</li>
-                ))}
+                {results.sources.map((source, index) => {
+                  // Check if source is a valid string before processing
+                  if (typeof source === 'string') {
+                    // Find the index of '.pdf' and slice the string
+                    const pdfIndex = source.indexOf('.pdf');
+                    const cleanSource = pdfIndex !== -1 ? source.slice(0, pdfIndex + 4) : source; // Include '.pdf'
+                    
+                    return (
+                      <li key={index} className={styles.sourceItem}>
+                        <a href={cleanSource} target="_blank" rel="noopener noreferrer" className={styles.sourceLink}>
+                          {cleanSource}
+                        </a>
+                      </li>
+                    );
+                  }
+                  return null; // Return null if source is not a valid string
+                })}
               </ul>
             </>
           )}

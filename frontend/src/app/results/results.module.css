@@ -162,4 +162,13 @@
   .listItem {
     padding-left: 1.25rem;
   }
+}
+
+.sourceLink {
+  color: #85d5c8;
+  text-decoration: underline;
+}
+
+.sourceLink:hover {
+  color: #c392ec;
 } 
