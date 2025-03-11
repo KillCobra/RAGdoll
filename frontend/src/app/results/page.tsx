@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './results.module.css';
+import BackgroundAnimation from '../components/BackgroundAnimation';
+
 
 interface AnalysisResult {
   text: string;
@@ -127,43 +129,46 @@ export default function ResultsPage() {
   }
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.container}>
-        <div className={styles.mainContent}>
-          <div className={styles.analysisText}>
-            {formatContent(results.text)}
+    <>
+    <BackgroundAnimation />
+      <div className={styles.wrapper}>
+        <div className={styles.container}>
+          <div className={styles.mainContent}>
+            <div className={styles.analysisText}>
+              {formatContent(results.text)}
+            </div>
+            
+            {results.sources && results.sources.length > 0 && (
+              <>
+                <h3 className={styles.sourcesTitle}>Sources</h3>
+                <ul className={styles.sourcesList}>
+                  {results.sources.map((source, index) => {
+                    // Check if source is a valid string before processing
+                    if (typeof source === 'string') {
+                      // Find the index of '.pdf' and slice the string
+                      const pdfIndex = source.indexOf('.pdf');
+                      const cleanSource = pdfIndex !== -1 ? source.slice(0, pdfIndex + 4) : source; // Include '.pdf'
+                      
+                      return (
+                        <li key={index} className={styles.sourceItem}>
+                          <a href={cleanSource} target="_blank" rel="noopener noreferrer" className={styles.sourceLink}>
+                            {cleanSource}
+                          </a>
+                        </li>
+                      );
+                    }
+                    return null; // Return null if source is not a valid string
+                  })}
+                </ul>
+              </>
+            )}
+            
+            <button onClick={() => router.push('/')} className={styles.button}>
+              New Analysis
+            </button>
           </div>
-          
-          {results.sources && results.sources.length > 0 && (
-            <>
-              <h3 className={styles.sourcesTitle}>Sources</h3>
-              <ul className={styles.sourcesList}>
-                {results.sources.map((source, index) => {
-                  // Check if source is a valid string before processing
-                  if (typeof source === 'string') {
-                    // Find the index of '.pdf' and slice the string
-                    const pdfIndex = source.indexOf('.pdf');
-                    const cleanSource = pdfIndex !== -1 ? source.slice(0, pdfIndex + 4) : source; // Include '.pdf'
-                    
-                    return (
-                      <li key={index} className={styles.sourceItem}>
-                        <a href={cleanSource} target="_blank" rel="noopener noreferrer" className={styles.sourceLink}>
-                          {cleanSource}
-                        </a>
-                      </li>
-                    );
-                  }
-                  return null; // Return null if source is not a valid string
-                })}
-              </ul>
-            </>
-          )}
-          
-          <button onClick={() => router.push('/')} className={styles.button}>
-            New Analysis
-          </button>
         </div>
       </div>
-    </div>
+    </>
   );
 }

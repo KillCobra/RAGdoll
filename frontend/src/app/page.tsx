@@ -1,8 +1,11 @@
 import styles from './page.module.css';
 import AnalysisForm from './components/AnalysisForm';
+import BackgroundAnimation from './components/BackgroundAnimation';
 
 export default function Home() {
   return (
+    <>
+    <BackgroundAnimation />
     <div className={styles.wrapper}>
       <main className={styles.page}>
         <div className={styles.container}>
@@ -21,12 +24,12 @@ export default function Home() {
             {/* Instructions */}
             <div className={styles.instructions}>
               <h2 className={styles.sectionTitle}>How it works</h2>
-              <ol className={styles.stepsList}>
+              <ul className={styles.stepsList}>
                 <li>Enter your company description in detail, including your core business activities, current market position, and goals.</li>
                 <li>Specify your target market or sector for expansion.</li>
                 <li>Submit your information for comprehensive analysis.</li>
                 <li>Receive a detailed risk assessment report with actionable insights.</li>
-              </ol>
+              </ul>
             </div>
 
             {/* Form Component */}
@@ -55,5 +58,6 @@ export default function Home() {
         </div>
       </main>
     </div>
+    </>
   );
 }

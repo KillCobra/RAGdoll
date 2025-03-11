@@ -1,5 +1,14 @@
+/* Font imports */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Satoshi:wght@400;500;700;900&display=swap');
+
 /* Theme variables need to be attached to a class */
 .wrapper {
+  /* Add font variables */
+  --font-primary: 'Plus Jakarta Sans', sans-serif;
+  --font-secondary: 'Satoshi', sans-serif;
+  
+  /* Existing variables */
   --background: #000000; /* OLED black */
   --background-elevated: #1a1a1a; /* Dark gray for elevated elements */
   --accent-purple: #c392ec;
@@ -9,10 +18,54 @@
   --border: #333333;
 }
 
+/* Apply fonts to elements */
+body {
+  font-family: var(--font-primary);
+  line-height: 1.6;
+}
+
+.title {
+  font-family: var(--font-secondary);
+  font-weight: 800; /* Increased font weight */
+  font-size: 3.75rem; /* Slightly larger */
+  color: #ffffff;
+  margin-bottom: 1.25rem; /* Increased margin bottom */
+  line-height: 1.1; /* Tighter line height */
+  background: linear-gradient(to right, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
+  background-size: 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: animate-gradient 3s ease-in-out infinite; /* Smoother animation */
+}
+
+@keyframes animate-gradient {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
+}
+
+.subtitle {
+  font-family: var(--font-primary);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transform: none; /* Remove the scaleX transform for better readability */
+}
+
+.sectionTitle {
+  font-family: var(--font-secondary);
+  letter-spacing: -0.01em;
+}
+
 /* Main Layout */
 .page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #000000, #1a1a1a); /* Gradient from OLED black to dark gray */
   padding: 3rem 1rem;
 }
 
@@ -27,44 +80,16 @@
   margin-bottom: 3rem;
 }
 
-.title {
-  font-size: 3.5rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 1rem;
-  line-height: 1.2;
-  background: linear-gradient(to right, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
-  background-size: 200%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: animate-gradient 2.5s linear infinite;
-
-}
-
-
-@keyframes animate-gradient{
-  to {
-    background-position: 200%;
-  }
-}
-
-.subtitle {
-  font-size: 1.25rem;
-  color: #a0a0a0;
-  max-width: 36rem;
-  margin: 0 auto;
-}
-
 /* Main Content */
 .mainContent {
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(28, 25, 25, 0.5); /* Adjusted for transparency */
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 2.5rem;
   margin-bottom: 3rem;
   text-align: center;
+  backdrop-filter: blur(10px); /* Added blur effect for glassy look */
 }
 
 .instructions {
@@ -87,34 +112,54 @@
 }
 
 .stepsList {
-  list-style-position: inside;
-  list-style-type: decimal;
+  list-style-position: outside; /* Better alignment */
+  list-style-type: none; /* Remove default bullets */
   text-align: left;
-  color: #a0a0a0;
-  font-size: 1rem;
-  line-height: 1.6;
+  color: var(--foreground-muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  counter-reset: steps;
 }
 
 .stepsList li {
-  margin-bottom: 1rem;
-  padding-left: 1rem;
+  margin-bottom: 1.25rem;
+  padding-left: 2rem;
+  position: relative;
+}
+
+.stepsList li::before {
+  counter-increment: steps;
+  content: counter(steps);
+  position: absolute;
+  left: 0;
+  top: 0.1rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-teal));
+  border-radius: 50%;
+  color: #000;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Form Container */
 .formContainer {
-  background: #1a1a1a;
-  padding: 2rem;
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 6px -1px rgba(195, 146, 236, 0.1),
-              0 2px 4px -1px rgba(133, 213, 200, 0.1);
-  border: 1px solid #c392ec;
+  padding: 2.5rem;
+  border-radius: 16px; /* Consistent with design language */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2),
+              0 0 1px rgba(255, 255, 255, 0.1); /* Subtle glow */
+  border: 1px solid rgba(195, 146, 236, 0.3); /* More subtle border */
+  backdrop-filter: blur(16px); /* Added blur effect for glassy look */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
 }
 
-.formTitle {
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: #ffffff;
-  margin-bottom: 1.5rem;
+.formContainer:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25),
+              0 0 2px rgba(255, 255, 255, 0.15);
 }
 
 /* Footer */
@@ -154,17 +199,31 @@
 .purple { background-color: #c392ec; }
 
 /* Responsive Design */
+@media (max-width: 768px) {
+  .page {
+    padding: 2.5rem 1.25rem;
+  }
+
+  .title {
+    font-size: 2.75rem;
+  }
+
+  .mainContent {
+    padding: 2rem 1.5rem;
+  }
+}
+
 @media (max-width: 640px) {
   .page {
     padding: 2rem 1rem;
   }
 
   .title {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
   }
 
   .mainContent {
-    padding: 1.5rem;
+    padding: 1.75rem 1.25rem;
   }
 
   .techStack {

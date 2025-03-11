@@ -1,29 +1,74 @@
+/* Font imports */
+@import url('https://fonts.googleapis.com/css2?family=Satoshi:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+.wrapper {
+  --font-primary: 'Satoshi', sans-serif;
+  --font-secondary: 'Space Grotesk', sans-serif;
+  
+  --background: #000000; /* OLED black */
+  --background-elevated: #1a1a1a; /* Dark gray for elevated elements */
+  --accent-purple: #c392ec;
+  --accent-teal: #85d5c8;
+  --foreground: #ffffff;
+  --foreground-muted: #a0a0a0;
+  --border: #333333;
+}
+
+/* Apply fonts to elements */
+body {
+  font-family: var(--font-primary);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.title {
+  font-family: var(--font-secondary);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-family: var(--font-primary);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transform: none; /* Remove the scaleX transform for better readability */
+}
+
+.sectionTitle {
+  font-family: var(--font-secondary);
+  letter-spacing: -0.01em;
+}
+
 .formWrapper {
   width: 100%;
   max-width: 42rem;
   margin: 0 auto;
+  background: rgba(36, 36, 36, 0.5);
 }
 
 .form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  background: rgba(36, 36, 36, 0.7); /* Semi-transparent background */
+  background: rgba(36, 36, 36, 0.7);
   border-radius: 0.75rem;
   padding: 8% 10%;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1); /* Light border for glass effect */
-  backdrop-filter: blur(10px); /* Blur effect for the background */
-  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  backdrop-filter: blur(15px); /* Increased blur effect for a glassy look */
+  -webkit-backdrop-filter: blur(15px); /* Safari support */
 }
 
 .formGroup {
   font-size: 1.25rem;
+  background: #000000, 0,5;
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  --primary: #85d5c8
+  --primary: #85d5c8;
+  --primary-hover: #c392ec;
 }
 
 .formGroup:hover {
@@ -51,15 +96,11 @@
 }
 
 .input {
-  all: unset;
-  width: 100%;
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid #333333;
-  background-color: #1a1a1a;
-  transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1), 
-              background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), 
-              box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #333;
+  background: #1a1a1a;
+  transition: border-color 150ms, background-color 150ms, box-shadow 150ms;
   color: #fefefe;
   font-size: 1rem;
   letter-spacing: 0.01em;
@@ -104,14 +145,11 @@
 
 .textarea {
   all: unset;
-  width: 100%;
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid #333333;
-  background-color: #1a1a1a;
-  transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1), 
-              background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), 
-              box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #333;
+  background: #1a1a1a;
+  transition: border-color 150ms, background-color 150ms, box-shadow 150ms;
   color: #fefefe;
   font-size: 1rem;
   letter-spacing: 0.01em;

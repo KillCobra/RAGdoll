@@ -1,6 +1,5 @@
 .wrapper {
   min-height: 100vh;
-  background: linear-gradient(135deg, #000000, #1a1a1a);
   padding: 3rem 1rem;
 }
 
@@ -171,4 +170,15 @@
 
 .sourceLink:hover {
   color: #c392ec;
-} 
+}
+
+.backgroundContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(8, 17, 26, 0.5); /* Adjusted for transparency */
+    overflow: hidden;
+    z-index: -1;
+}
