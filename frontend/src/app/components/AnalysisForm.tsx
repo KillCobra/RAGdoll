@@ -54,10 +54,6 @@ export default function AnalysisForm() {
         )}
 
         <div className={styles.formGroup}>
-          <label className={styles.label}>
-            Company Description
-            <span className={styles.required}>(Required)</span>
-          </label>
           <textarea
             required
             className={styles.textarea}
@@ -66,13 +62,13 @@ export default function AnalysisForm() {
             value={formData.description}
             onChange={(e) => setFormData({...formData, description: e.target.value})}
           />
+          <label className={styles.label}>
+            Company Description
+            <span className={styles.required}>(Required)</span>
+          </label>
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label}>
-            Target Market/Sector
-            <span className={styles.required}>(Required)</span>
-          </label>
           <input
             type="text"
             required
@@ -81,6 +77,10 @@ export default function AnalysisForm() {
             value={formData.market_or_sector}
             onChange={(e) => setFormData({...formData, market_or_sector: e.target.value})}
           />
+          <label className={styles.label}>
+            Target Market/Sector
+            <span className={styles.required}>(Required)</span>
+          </label>
         </div>
 
         <button
@@ -89,10 +89,7 @@ export default function AnalysisForm() {
           className={styles.button}
         >
           {isLoading ? (
-            <div className={styles.loadingWrapper}>
-              <LoadingSpinner size="small" color="white" text="" />
-              <span>Analyzing...</span>
-            </div>
+            <LoadingSpinner />
           ) : (
             'Generate Risk Analysis'
           )}
