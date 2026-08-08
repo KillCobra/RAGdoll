@@ -18,7 +18,10 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import argparse
 
-from langchain_community.vectorstores import Chroma
+try:
+    from langchain_chroma import Chroma
+except ImportError:
+    from langchain_community.vectorstores import Chroma
 from get_embedding_function import get_embedding_function
 
 # Download required NLTK data

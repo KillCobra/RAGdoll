@@ -1,13 +1,14 @@
 import argparse
-import os
 from dotenv import load_dotenv
-from langchain_community.vectorstores import Chroma
+try:
+    from langchain_chroma import Chroma
+except ImportError:
+    from langchain_community.vectorstores import Chroma
 from langchain.prompts import ChatPromptTemplate
-import requests
-import time
 
 from get_embedding_function import get_embedding_function
 from langchain.schema.document import Document
+from llm_client import generate_gemini_text
 
 # Load environment variables
 load_dotenv()
@@ -58,13 +59,6 @@ def run_query_with_description(company_description, market_or_sector, query_text
         }
 
 def main(company_description, query_text):
-    # Verify Gemini API key is set
-    if not os.getenv("GEMINI_API_KEY"):
-        raise ValueError(
-            "GEMINI_API_KEY not found in environment variables. "
-            "Please add it to your .env file."
-        )
-    
     # Create CLI.
     parser = argparse.ArgumentParser(description="Query data based on company description.")
     parser.add_argument("company_description", type=str, nargs='?', default=company_description, help="Company description")
@@ -101,48 +95,7 @@ def query_rag(company_description: str, query_text: str):
     prompt = prompt_template.format(context=context_text, question=query_text, description=company_description)
 
     # Initialize Gemini API call
-    api_key = os.getenv("GEMINI_API_KEY")
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={api_key}"
-    
-    # Updated data structure to match Gemini API requirements
-    data = {
-        "contents": [
-            {
-                "parts": [
-                    {
-                        "text": prompt
-                    }
-                ]
-            }
-        ]
-    }
-    
-    # Updated headers (removed Bearer token)
-    headers = {
-        "Content-Type": "application/json"
-    }
-    
-    # Retry logic with exponential backoff
-    for attempt in range(5):  # Try up to 5 times
-        response = requests.post(url, headers=headers, json=data)
-        
-        if response.status_code == 200:
-            break  # Exit the loop if the request was successful
-        elif response.status_code == 429:
-            wait_time = 2 ** attempt  # Exponential backoff
-            print(f"Rate limit exceeded. Waiting for {wait_time} seconds before retrying...")
-            time.sleep(wait_time)
-        else:
-            raise Exception(f"Error from Gemini API: {response.text}")
-    else:
-        raise Exception("Failed to retrieve content after multiple attempts due to rate limiting.")
-
-    # Extract the response from the Gemini API response structure
-    try:
-        response_data = response.json()
-        response_text = response_data.get('candidates', [{}])[0].get('content', {}).get('parts', [{}])[0].get('text', "No response generated")
-    except Exception as e:
-        raise Exception(f"Error parsing Gemini API response: {str(e)}")
+    response_text = generate_gemini_text(prompt)
 
     sources = [doc.metadata.get("id", None) for doc, _score in results]
     

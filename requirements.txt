@@ -1,6 +1,7 @@
 pypdf
 langchain
 langchain-community
+langchain-chroma
 chromadb # Vector storage
 pytest
 boto3
@@ -8,6 +9,7 @@ sentence-transformers
 langchain-huggingface
 huggingface_hub
 python-dotenv
+pymupdf
 pygame
 PyQt6
 pyaudio

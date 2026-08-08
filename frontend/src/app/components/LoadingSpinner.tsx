@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { bouncy } from 'ldrs'
-// Import the quantum loader
 
-// Register the quantum loader
 bouncy.register()
 
 
